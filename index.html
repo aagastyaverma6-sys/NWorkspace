@@ -7,6 +7,38 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="header">
+    <div class="brand-block">
+        <div class="logo-area">
+            <!-- Modern Nebula Orbit Logo -->
+            <svg class="nebula-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="url(#grad)" stroke-width="2" />
+                <circle cx="50" cy="50" r="20" fill="var(--accent)" opacity="0.8">
+                    <animate attributeName="r" values="18;22;18" dur="3s" repeatCount="indefinite" />
+                </circle>
+                <defs>
+                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#818cf8;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#c084fc;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <h1 class="hub-title">NEBULA<span>HUB</span></h1>
+        </div>
+        <div class="time-block">
+            <div id="clock">00:00</div>
+            <div id="date">LOADING...</div>
+        </div>
+    </div>
+    
+    <div class="omni-box">
+        <select id="searchMode">
+            <option value="google">Google</option>
+            <option value="atom">Atom AI</option>
+        </select>
+        <input type="text" placeholder="Command Nebula..." onkeypress="handleOmni(event)">
+    </div>
+</div>
 
 <div class="sidebar">
     <div class="icon" id="nav-home" onclick="loadSet('home', this)" title="Home">🏠</div>
