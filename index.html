@@ -3,88 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nebula Office | Atom</title>
+    <title>Nebula Hub | Workspace</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="header">
-    <div class="brand-block">
-        <div class="logo-area">
-            <!-- Modern Nebula Orbit Logo -->
-            <svg class="nebula-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="url(#grad)" stroke-width="2" />
-                <circle cx="50" cy="50" r="20" fill="var(--accent)" opacity="0.8">
-                    <animate attributeName="r" values="18;22;18" dur="3s" repeatCount="indefinite" />
-                </circle>
-                <defs>
-                    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#818cf8;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#c084fc;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-            </svg>
-            <h1 class="hub-title">NEBULA<span>HUB</span></h1>
-        </div>
-        <div class="time-block">
-            <div id="clock">00:00</div>
-            <div id="date">LOADING...</div>
-        </div>
-    </div>
-    
-    <div class="omni-box">
-        <select id="searchMode">
-            <option value="google">Google</option>
-            <option value="atom">Atom AI</option>
-        </select>
-        <input type="text" placeholder="Command Nebula..." onkeypress="handleOmni(event)">
-    </div>
-</div>
 
-<div class="sidebar">
-    <div class="icon" id="nav-home" onclick="loadSet('home', this)" title="Home">🏠</div>
-    <div class="icon" id="nav-coding" onclick="loadSet('coding', this)" title="Coding">💻</div>
-    <div class="icon" id="nav-research" onclick="loadSet('research', this)" title="Research">🔍</div>
-    <div class="icon" id="nav-ai" onclick="loadSet('ai', this)" title="AI">🤖</div>
-</div>
+    <nav>
+        <div class="icon active" id="nav-home" onclick="loadSet('home', this)">H</div>
+        <div class="icon" id="nav-coding" onclick="loadSet('coding', this)">C</div>
+        <div class="icon" id="nav-research" onclick="loadSet('research', this)">R</div>
+        <div class="icon" id="nav-ai" onclick="loadSet('ai', this)">A</div>
+        <div style="margin-top: auto;" class="icon" onclick="resetKey()" title="Reset API Key">⚙️</div>
+    </nav>
 
-<div class="container">
-    <header>
-        <div class="omnibar">
-            <select id="searchMode">
-                <option value="google">Google</option>
-                <option value="copilot">Atom AI</option>
-            </select>
-            <input type="text" id="omnibarInput" placeholder="Command Nebula..." onkeydown="handleOmni(event)">
+    <main>
+        <div class="header">
+            <div class="brand-block">
+                <div class="logo-area">
+                    <svg class="nebula-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="url(#grad)" stroke-width="2" />
+                        <circle cx="50" cy="50" r="20" fill="var(--accent)" opacity="0.8">
+                            <animate attributeName="r" values="18;22;18" dur="3s" repeatCount="indefinite" />
+                        </circle>
+                        <defs>
+                            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#818cf8;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#c084fc;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <h1 class="hub-title">NEBULA<span>HUB</span></h1>
+                </div>
+                <div class="time-block">
+                    <div id="clock">00:00</div>
+                    <div id="date">LOADING...</div>
+                </div>
+            </div>
+            
+            <div class="omni-box">
+                <select id="searchMode">
+                    <option value="google">Google</option>
+                    <option value="atom">Atom AI</option>
+                </select>
+                <input type="text" placeholder="Command Nebula..." onkeypress="handleOmni(event)">
+            </div>
         </div>
-        <div class="time-widget">
-            <div id="clock">00:00</div>
-            <div id="date">LOADING...</div>
-        </div>
-    </header>
 
-    <div class="layout">
-        <div class="app-grid" id="appGrid"></div>
-        
+        <div class="grid" id="appGrid">
+            <!-- Apps injected by JS -->
+        </div>
+
         <div class="widgets">
-            <div class="widget">
-                <span class="widget-label">Atom Copilot</span>
-                <div id="copilot-display">Ready. All data is saved locally.</div>
+            <div class="widget-box">
+                <h4 style="margin-bottom:10px; color:var(--accent);">PERSISTENT NOTES</h4>
+                <textarea id="notes-area" placeholder="Draft your thoughts..."></textarea>
             </div>
-            <div class="widget">
-                <span class="widget-label">Persistent Notes</span>
-                <textarea id="notes-area" placeholder="Type here to save..."></textarea>
-            </div>
-            <div class="widget">
-                <span class="widget-label">System</span>
-                <div id="ai-status" style="color: #4ade80;">● GROQ ACTIVE</div>
-                <div style="font-size: 0.7rem; opacity: 0.5; margin-top: 5px;">NEBULA v4.0.0</div>
+            <div class="widget-box">
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <h4 style="color:var(--accent);">ATOM COPILOT</h4>
+                    <div id="ai-status">●</div>
+                </div>
+                <div id="copilot-display">Systems Active. Ready for commands.</div>
             </div>
         </div>
-    </div>
-</div>
+    </main>
 
-<div class="brand-footer">ATOM SOFTWARE • AAGASTYA VERMA</div>
-
-<script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
