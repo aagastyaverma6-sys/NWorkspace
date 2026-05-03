@@ -1,106 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nebula Office</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌌</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
-body{height:100vh;background:linear-gradient(135deg,#0f2027,#2c5364,#6a11cb);display:flex;color:white}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebula Office</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌌</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-heavy: rgba(255, 255, 255, 0.12);
+            --accent: #bb86fc;
+            --bg: #050505;
+        }
 
-.sidebar{width:90px;backdrop-filter:blur(20px);background:rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.2);display:flex;flex-direction:column;align-items:center;padding:15px 0;gap:15px}
-.icon{width:55px;height:55px;display:flex;align-items:center;justify-content:center;border-radius:18px;cursor:pointer;font-size:22px;transition:.25s}
-.icon:hover{background:rgba(255,255,255,.2);transform:scale(1.05)}
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body {
+            height: 100vh;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(106, 17, 203, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(37, 117, 252, 0.1) 0%, transparent 40%);
+            color: white;
+            display: flex;
+            overflow: hidden;
+        }
 
-.main{flex:1;display:flex;flex-direction:column;padding:20px;gap:15px}
-.topbar{height:60px;backdrop-filter:blur(20px);background:rgba(255,255,255,.12);border-radius:18px;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
+        .sidebar {
+            width: 80px;
+            backdrop-filter: blur(20px);
+            background: var(--glass);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            gap: 20px;
+            z-index: 100;
+        }
 
-.grid{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+        .icon {
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            cursor: pointer;
+            font-size: 22px;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255,255,255,0.03);
+        }
 
-.card{backdrop-filter:blur(20px);background:rgba(255,255,255,.12);border-radius:18px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:.25s;border:1px solid rgba(255,255,255,.2)}
-.card:hover{transform:translateY(-5px);background:rgba(255,255,255,.2)}
-.card-title{font-size:16px;font-weight:600}
-.card-desc{font-size:12px;opacity:.7;margin-top:5px}
-.launch-btn{margin-top:15px;padding:6px 10px;border-radius:10px;background:white;color:black;font-size:12px;text-align:center}
+        .icon:hover {
+            background: var(--accent);
+            transform: scale(1.1);
+            color: black;
+        }
 
-.credits{position:fixed;bottom:10px;right:15px;font-size:12px;opacity:.6}
-</style>
+        .icon.active {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid var(--accent);
+        }
+
+        .container {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .time-widget { text-align: right; }
+        #clock { font-size: 2.5rem; font-weight: 300; letter-spacing: -2px; }
+        #date { font-size: 0.9rem; color: var(--accent); opacity: 0.8; }
+
+        .search-bar {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 25px;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            transition: 0.3s;
+        }
+
+        .search-bar:focus-within {
+            background: var(--glass-heavy);
+            border-color: var(--accent);
+            max-width: 550px;
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            padding-left: 15px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 30px;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: rgba(255,255,255,0.08);
+            border-color: var(--accent);
+        }
+
+        .card h3 { margin-bottom: 8px; font-weight: 600; }
+        .card p { font-size: 0.85rem; opacity: 0.6; line-height: 1.5; }
+
+        .widgets {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .widget {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 24px;
+        }
+
+        .widget-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            display: block;
+            color: var(--accent);
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: transparent;
+            border: none;
+            color: white;
+            resize: none;
+            outline: none;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                height: 70px;
+                flex-direction: row;
+                justify-content: space-around;
+                border-right: none;
+                border-top: 1px solid rgba(255,255,255,0.1);
+                position: fixed;
+                bottom: 0;
+                padding: 0;
+            }
+            .layout { grid-template-columns: 1fr; }
+            .widgets { display: none; }
+            .container { padding: 20px; padding-bottom: 100px; }
+            #clock { font-size: 1.8rem; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card { animation: fadeIn 0.4s ease-out; }
+    </style>
 </head>
 <body>
 
 <div class="sidebar">
-  <div class="icon" onclick="loadSet('home')">🏠</div>
-  <div class="icon" onclick="loadSet('coding')">💻</div>
-  <div class="icon" onclick="loadSet('research')">🔍</div>
-  <div class="icon" onclick="loadSet('ai')">🤖</div>
+    <div class="icon" id="nav-home" onclick="loadSet('home', this)" title="Home">🏠</div>
+    <div class="icon" id="nav-coding" onclick="loadSet('coding', this)" title="Coding">💻</div>
+    <div class="icon" id="nav-research" onclick="loadSet('research', this)" title="Research">🔍</div>
+    <div class="icon" id="nav-ai" onclick="loadSet('ai', this)" title="AI">🤖</div>
 </div>
 
-<div class="main">
-  <div class="topbar">
-    <div>Nebula Workspace</div>
-    <div id="mode">HOME</div>
-  </div>
+<div class="container">
+    <header>
+        <div>
+            <div class="search-bar">
+                <span>⚡</span>
+                <input type="text" id="searchInput" placeholder="Search..." onkeydown="doSearch(event)">
+            </div>
+        </div>
+        <div class="time-widget">
+            <div id="clock">00:00</div>
+            <div id="date">LOADING...</div>
+        </div>
+    </header>
 
-  <div class="grid" id="grid"></div>
+    <div class="layout">
+        <div class="app-grid" id="appGrid"></div>
+        
+        <div class="widgets">
+            <div class="widget">
+                <span class="widget-label">SCRATCHPAD</span>
+                <textarea id="notes" placeholder="Quick notes..."></textarea>
+            </div>
+            <div class="widget" style="text-align: center;">
+                <span class="widget-label">SYSTEM</span>
+                <div style="font-size: 0.8rem; color: #4ade80;">● ACTIVE</div>
+                <div style="font-size: 0.7rem; opacity: 0.5; margin-top: 5px;">NEBULA v2.5.1</div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="credits">Powered by Google & Atom Software • Founder: Aagastya Verma</div>
+<div style="position: fixed; bottom: 20px; left: 100px; font-size: 10px; opacity: 0.3; letter-spacing: 1px;">
+    ATOM SOFTWARE • AAGASTYA VERMA
+</div>
 
 <script>
-const sets = {
-  home: [
-    {name:"Docs", url:"https://docs.google.com", desc:"Write documents"},
-    {name:"Sheets", url:"https://sheets.google.com", desc:"Spreadsheets"},
-    {name:"Gmail", url:"https://mail.google.com", desc:"Email"},
-    {name:"Gemini", url:"https://gemini.google.com", desc:"AI Assistant"}
-  ],
-  coding: [
-    {name:"VS Code", url:"https://vscode.dev", desc:"Web IDE"},
-    {name:"NebulaX", url:"https://aagastyaverma6-sys.github.io/NebulaX", desc:"Indigenous IDE by Atom"},
-    {name:"GitHub", url:"https://github.com", desc:"Repositories"},
-    {name:"StackOverflow", url:"https://stackoverflow.com", desc:"Debug help"}
-    {name:"Google Colab", url:"https://colab.research.google.com", desc:"Full Ubuntu text Dev environment"}
-  ],
-  research: [
-    {name:"Perplexity", url:"https://perplexity.ai", desc:"AI research"},
-    {name:"Scholar", url:"https://scholar.google.com", desc:"Papers"},
-    {name:"Wikipedia", url:"https://wikipedia.org", desc:"Knowledge"},
-    {name:"Notion", url:"https://notion.so", desc:"Notes"}
-  ],
-  ai: [
-    {name:"Gemini", url:"https://gemini.google.com", desc:"Google AI"},
-    {name:"ChatGPT", url:"https://chat.openai.com", desc:"AI chat"},
-    {name:"Poe", url:"https://poe.com", desc:"Multi AI"},
-    {name:"HuggingFace", url:"https://huggingface.co/chat", desc:"Open models"}
-    {name:"PlAI", url:"https://plai.chat/", desc:"No login AI"}
-  ]
-};
+    const apps = {
+        home: [
+            { n: "Gmail", d: "Communication hub", u: "https://mail.google.com" },
+            { n: "Calendar", d: "Event management", u: "https://calendar.google.com" },
+            { n: "Notion", d: "Note taking & docs", u: "https://notion.so" },
+            { n: "Drive", d: "Cloud storage", u: "https://drive.google.com" }
+        ],
+        coding: [
+            { n: "NebulaX", d: "Indigenous IDE", u: "https://aagastyaverma6-sys.github.io/NebulaX" },
+            { n: "GitHub", d: "Source control", u: "https://github.com" },
+            { n: "Vercel", d: "Deployment platform", u: "https://vercel.com" },
+            { n: "StackOverflow", d: "Knowledge base", u: "https://stackoverflow.com" }
+        ],
+        research: [
+            { n: "Perplexity", d: "AI search engine", u: "https://perplexity.ai" },
+            { n: "Scholar", d: "Academic papers", u: "https://scholar.google.com" },
+            { n: "Wolfram", d: "Computational math", u: "https://wolframalpha.com" },
+            { n: "Medium", d: "Tech articles", u: "https://medium.com" }
+        ],
+        ai: [
+            { n: "Gemini", d: "Google Intelligence", u: "https://gemini.google.com" },
+            { n: "ChatGPT", d: "OpenAI Chat", u: "https://chat.openai.com" },
+            { n: "Claude", d: "Anthropic Model", u: "https://claude.ai" },
+            { n: "HuggingFace", d: "ML Community", u: "https://huggingface.co" }
+        ]
+    };
 
-function loadSet(name){
-  const grid = document.getElementById('grid');
-  grid.innerHTML = '';
-  document.getElementById('mode').innerText = name.toUpperCase();
+    function loadSet(key, el) {
+        const grid = document.getElementById('appGrid');
+        grid.innerHTML = '';
+        
+        document.querySelectorAll('.icon').forEach(i => i.classList.remove('active'));
+        if(el) el.classList.add('active');
+        localStorage.setItem('lastTab', key);
 
-  sets[name].forEach(app => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.onclick = () => window.open(app.url, '_blank');
+        apps[key].forEach((a, i) => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.style.animationDelay = `${i * 0.05}s`;
+            div.onclick = () => window.open(a.u, '_blank');
+            div.innerHTML = `<h3>${a.n}</h3><p>${a.d}</p>`;
+            grid.appendChild(div);
+        });
+    }
 
-    card.innerHTML = `
-      <div>
-        <div class="card-title">${app.name}</div>
-        <div class="card-desc">${app.desc}</div>
-      </div>
-      <div class="launch-btn">Launch</div>
-    `;
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
+        document.getElementById('date').innerText = now.toLocaleDateString([], {weekday: 'long', month: 'short', day: 'numeric'}).toUpperCase();
+    }
 
-    grid.appendChild(card);
-  });
-}
+    function doSearch(e) {
+        if(e.key === 'Enter') {
+            const val = e.target.value;
+            if(val) {
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(val)}`, '_blank');
+                e.target.value = '';
+            }
+        }
+    }
 
-loadSet('home');
+    const notes = document.getElementById('notes');
+    notes.value = localStorage.getItem('nebula_notes') || '';
+    notes.oninput = () => localStorage.setItem('nebula_notes', notes.value);
+
+    const lastTab = localStorage.getItem('lastTab') || 'home';
+    const activeIcon = document.getElementById(`nav-${lastTab}`);
+    loadSet(lastTab, activeIcon);
+    
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+</body>
+</html>
 </script>
 
 </body>
