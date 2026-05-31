@@ -30,7 +30,6 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* --- SIDEBAR NAVIGATION --- */
 nav {
     width: 80px;
     background: rgba(0, 0, 0, 0.2);
@@ -64,7 +63,6 @@ nav {
     box-shadow: 0 0 20px rgba(129, 140, 248, 0.2);
 }
 
-/* --- MAIN CONTENT AREA --- */
 main {
     flex: 1;
     display: flex;
@@ -74,7 +72,6 @@ main {
     overflow-y: auto;
 }
 
-/* --- HEADER & BRANDING --- */
 .header {
     display: flex;
     justify-content: space-between;
@@ -129,7 +126,6 @@ main {
     opacity: 0.8;
 }
 
-/* --- OMNIBOX --- */
 .omni-box {
     display: flex;
     background: var(--glass);
@@ -175,7 +171,6 @@ main {
     font-size: 1rem;
 }
 
-/* --- APP GRID --- */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -185,7 +180,6 @@ main {
     padding-right: 10px;
 }
 
-/* Scrollbar hiding for grid */
 .grid::-webkit-scrollbar { width: 5px; }
 .grid::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
 
@@ -215,7 +209,6 @@ main {
 .card h3 { font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
 .card p { font-size: 0.75rem; color: var(--text-dim); }
 
-/* --- WIDGET SECTION --- */
 .widgets {
     display: grid;
     grid-template-columns: 1fr 1fr;
