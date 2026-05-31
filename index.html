@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nebula Hub | Workspace</title>
+    <title>Nebula Hub | Ultimate Workspace</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    <div id="command-modal" class="hidden">
+        <div class="cmd-palette">
+            <input type="text" id="cmd-input" placeholder="Search 420+ Apps or execute command (Esc to close)...">
+            <ul id="cmd-results"></ul>
+        </div>
+    </div>
 
     <nav>
         <div class="icon active" id="nav-home" onclick="loadSet('home', this)">H</div>
@@ -15,7 +22,8 @@
         <div class="icon" id="nav-research" onclick="loadSet('research', this)">R</div>
         <div class="icon" id="nav-ai" onclick="loadSet('ai', this)">A</div>
         <div class="icon" id="nav-utilities" onclick="loadSet('utilities', this)">U</div>
-        <div style="margin-top: auto;" class="icon" onclick="resetKey()" title="Reset API Key">⚙️</div>
+        <div class="icon" id="nav-media" onclick="loadSet('media', this)">M</div>
+        <div style="margin-top: auto;" class="icon" onclick="toggleSettings()" title="Settings">⚙️</div>
     </nav>
 
     <main>
@@ -39,6 +47,7 @@
                 <div class="time-block">
                     <div id="clock">00:00</div>
                     <div id="date">LOADING...</div>
+                    <div id="weather-module">28°C | DEL</div>
                 </div>
             </div>
             
@@ -46,8 +55,10 @@
                 <select id="searchMode">
                     <option value="google">Google</option>
                     <option value="atom">Atom AI</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="github">GitHub</option>
                 </select>
-                <input type="text" placeholder="Command Nebula..." onkeypress="handleOmni(event)">
+                <input type="text" placeholder="Command Nebula... (Press Ctrl+K for Palette)" onkeypress="handleOmni(event)">
             </div>
         </div>
 
@@ -59,6 +70,16 @@
                 <h4 style="margin-bottom:10px; color:var(--accent);">PERSISTENT NOTES</h4>
                 <textarea id="notes-area" placeholder="Draft your thoughts..."></textarea>
             </div>
+            
+            <div class="widget-box" id="pomodoro-widget">
+                <h4 style="margin-bottom:10px; color:var(--accent);">FOCUS PROTOCOL</h4>
+                <div class="timer-display" id="timer-val">25:00</div>
+                <div class="timer-controls">
+                    <button id="btn-start" onclick="startTimer()">Start</button>
+                    <button id="btn-reset" onclick="resetTimer()">Reset</button>
+                </div>
+            </div>
+
             <div class="widget-box">
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
                     <h4 style="color:var(--accent);">ATOM COPILOT</h4>
