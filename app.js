@@ -189,7 +189,8 @@ const apps = {
         { n: "JSTOR", d: "Academic Archives", u: "https://jstor.org" },
         { n: "NASA", d: "Space Exploration", u: "https://nasa.gov" }
     ],
-    ai: [
+   ai: [
+        { n: "Arena AI", d: "LLM Benchmarking", u: "https://lmarena.ai" },
         { n: "PlAI", d: "Instant AI Chat", u: "https://plai.chat/" },
         { n: "Gemini", d: "Google DeepMind", u: "https://gemini.google.com" },
         { n: "ChatGPT", d: "OpenAI GPT-4", u: "https://chat.openai.com" },
@@ -220,6 +221,11 @@ const apps = {
         { n: "Pika", d: "Video Motion", u: "https://pika.art" },
         { n: "Scribe", d: "How-to Guides", u: "https://scribehow.com" },
         { n: "Krea AI", d: "Realtime Upscaling", u: "https://krea.ai" }
+    ],
+    utilities: [
+        { n: "Pi7", d: "Image & PDF Toolkit", u: "https://pi7.org" },
+        { n: "Excalidraw", d: "Virtual Sketching", u: "https://excalidraw.com" },
+        { n: "Coolors", d: "Palette Generator", u: "https://coolors.co" }
     ]
 };
 
